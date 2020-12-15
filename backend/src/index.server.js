@@ -5,10 +5,13 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
 //routes
+const userRoutes = require('./routes/user')
+
+//env variables 
 env.config();
+db = process.env.MONGO_URI
 
 //mongodb connection
-db = process.env.MONGO_URI
 mongoose.connect(
     db, 
     {
@@ -19,20 +22,8 @@ mongoose.connect(
 
 
 app.use(bodyParser.json());
+app.use('/api', userRoutes)
 
-app.get('/', (req, res, next) => {
-    res.status(200).json({
-        message: 'Hello from Server'
-    });
-
-})
-
-app.post('/data', (req, res, next) => {
-    res.status(200).json({
-        message: req.body
-    });
-
-})
 
 app.listen(process.env.PORT, () => {
     console.log('server running on port 5000')
